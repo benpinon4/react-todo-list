@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const ToDoListContainer = (props) => {
   return (
-    <div>
+    <div className="to-do-Container">
 
       {props.todoList.map((todo, index) => {
         return <ToDoListItem todo={todo} key={index} handleUpdate={props.handleUpdate} />;
@@ -26,17 +26,19 @@ const ToDoForm = (props) => {
 
 
   return (
-    <div>
-      <label>Title:</label>
-      <input
+      <div>
+    <div className="form-Container">
+      <label className="add-todo-Item">Title:  </label>      
+      <input className="add-todo-Input"
         type="text"
         onChange={(event) => {
           setTitle(event.target.value);
         }}
       ></input>
-      <br></br>
-      <label>Priority:</label>
-      <select
+      </div>
+      <div className="form-Container">
+      <label className="add-todo-Item">Priority: </label>
+      <select className="add-todo-Input"
         onChange={(event) => {
           setPriority(event.target.value);
         }}
@@ -46,19 +48,23 @@ const ToDoForm = (props) => {
         <option value="Medium">Medium</option>
         <option value="High">High</option>
       </select>
-      <br></br>
-      <label>Description:</label>
-      <textarea
+      </div> 
+    
+      <div className="form-Container">
+      <label className="add-todo-Item">Description: </label>
+      <textarea className="add-todo-Input"
         type="text"
         onChange={(event) => {
           setDescription(event.target.value);
         }}
       ></textarea>
+      </div>
       <br></br>
       <button onClick={()=>{
         props.handleAddTo(title,priority,description)
       }}>Add ToDo Item</button>
     </div>
+    
   );
 };
 
@@ -119,7 +125,19 @@ const App = () => {
     // console.log(updatedToDoIndex)
     const updatedToDoList = todoListCopy.map((todo)=>{
 
-      if(todo.title === title && todo.creationDate === creationDate){
+      if(todo.isComplete === true ) {
+        return {
+          title: todo.title,
+          priority: todo.priority,
+          isComplete: true,
+          description: todo.description,
+          creationDate: todo.creationDate,
+          completedDate: todo.completedDate
+
+        }
+      }
+      
+      if(todo.title === title && todo.creationDate === creationDate  ){
       return {
           title: todo.title,
           priority: todo.priority,
@@ -130,7 +148,9 @@ const App = () => {
 
         }
         
-      } else {
+      } 
+      
+      if(todo.isComplete === false) {
         return{
         title: todo.title,
         priority: todo.priority,
@@ -160,7 +180,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>ToDo List</h1>
+        <h1 id="todo-List-Title">ToDo List</h1>
         <ToDoForm handleAddTo={handleAddTo} />
         <ToDoListContainer todoList={todoList} handleUpdate={handleUpdate}/>
 
